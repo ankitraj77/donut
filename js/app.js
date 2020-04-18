@@ -109,14 +109,14 @@ frame.on('ready', () => {
 
 		// Check if circle goes beyond stage width and height
 		if (circle.x > stageW) {
-			xMultiplier = stageW
+			circle.x = stageW
 		} else if (circle.x < 0) {
-			xMultiplier = 0
+			circle.x = 0
 		}
 		if (circle.y > stageH) {
-			yMultiplier = stageH
+			circle.y = stageH
 		} else if (circle.y < 0) {
-			yMultiplier = 0
+			circle.y = 0
 		}
 
 		// Hit test
