@@ -70,7 +70,8 @@ frame.on('ready', () => {
 		startPaused: true,
 	}).centerReg(target)
 
-	let xMultiplier, yMultiplier
+	let xMultiplier = 0
+	let yMultiplier = 0
 	// DEVICE ORIENTATION
 	window.addEventListener('deviceorientation', handleOrientation, true)
 	function handleOrientation(event) {
