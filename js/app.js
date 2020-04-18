@@ -96,6 +96,7 @@ frame.on('ready', () => {
 		// Do stuff with the new orientation data
 		label.text = xMultiplier
 		circle.x += xMultiplier
+		circle.y += yMultiplier
 	}
 	// HIT TEST
 	Ticker.add(() => {
