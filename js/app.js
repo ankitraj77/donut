@@ -95,11 +95,11 @@ frame.on('ready', () => {
 		yMultiplier += 0
 		// Do stuff with the new orientation data
 		label.text = xMultiplier
-		circle.x += xMultiplier
-		circle.y += yMultiplier
 	}
 	// HIT TEST
 	Ticker.add(() => {
+		circle.x += xMultiplier
+		circle.y += yMultiplier
 		if (circle.hitTestReg(target)) {
 			delayCounter++
 			console.log('Hitting ' + delayCounter)
