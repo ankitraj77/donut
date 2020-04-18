@@ -58,7 +58,11 @@ frame.on('ready', () => {
 	})
 
 	// TARGET CIRCLE
-	let target = new Circle(41, '#54E69D').centerReg()
+	let target = new Circle({
+		radius: 41,
+		borderColor: '#54E69D',
+		borderWidth: 2,
+	}).centerReg()
 	let circle = new Circle(20, '#E65454').centerReg().pos(100, 100).drag()
 	let label = new Label('hello', null, null, '#ffffff')
 		.centerReg()
@@ -99,8 +103,17 @@ frame.on('ready', () => {
 	}
 	// HIT TEST
 	Ticker.add(() => {
-		circle.x += xMultiplier
-		circle.y += yMultiplier
+		if (circle.x < stageW && circle.x > 0) {
+			circle.x += xMultiplier
+		} else {
+			xMultiplier = stageW
+		}
+		if (circle.y < stageH && circle.y > 0) {
+			circle.y += yMultiplier
+		} else {
+			yMultiplier = stageH
+		}
+
 		if (circle.hitTestReg(target)) {
 			delayCounter++
 			console.log('Hitting ' + delayCounter)
