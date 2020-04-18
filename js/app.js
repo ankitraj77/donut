@@ -104,21 +104,19 @@ frame.on('ready', () => {
 	// ZIM TICKER
 	Ticker.add(() => {
 		// Move circle based on orientation data
+		circle.x += xMultiplier
+		circle.y += yMultiplier
 
 		// Check if circle goes beyond stage width and height
 		if (circle.x > stageW) {
 			xMultiplier = stageW
 		} else if (circle.x < 0) {
 			xMultiplier = 0
-		} else {
-			circle.x += xMultiplier
 		}
 		if (circle.y > stageH) {
 			yMultiplier = stageH
 		} else if (circle.y < 0) {
 			yMultiplier = 0
-		} else {
-			circle.y += yMultiplier
 		}
 
 		// Hit test
