@@ -103,12 +103,12 @@ frame.on('ready', () => {
 	}
 	// HIT TEST
 	Ticker.add(() => {
-		if (circle.x < stageW && circle.x > 0) {
+		if (circle.x <= stageW && circle.x >= 0) {
 			circle.x += xMultiplier
 		} else {
 			xMultiplier = stageW
 		}
-		if (circle.y < stageH && circle.y > 0) {
+		if (circle.y <= stageH && circle.y >= 0) {
 			circle.y += yMultiplier
 		} else {
 			yMultiplier = stageH
