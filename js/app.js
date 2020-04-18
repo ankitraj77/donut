@@ -70,31 +70,32 @@ frame.on('ready', () => {
 		startPaused: true,
 	}).centerReg(target)
 
+	let xMultiplier, yMultiplier
 	// DEVICE ORIENTATION
 	window.addEventListener('deviceorientation', handleOrientation, true)
 	function handleOrientation(event) {
-		let x = event.beta // In degree in the range [-180,180]
-		let y = event.gamma // In degree in the range [-90,90]
+		yMultiplier = event.beta // In degree in the range [-180,180]
+		xMultiplier = event.gamma // In degree in the range [-90,90]
 		// newHue = event.alpha
 
 		// newHue = newHue.toFixed(0)
 
 		// Because we don't want to have the device upside down
 		// We constrain the x value to the range [-90,90]
-		if (x > 90) {
-			x = 90
+		if (yMultiplier > 90) {
+			yMultiplier = 90
 		}
-		if (x < -90) {
-			x = -90
+		if (yMultiplier < -90) {
+			yMultiplier = -90
 		}
 
 		// To make computation easier we shift the range of
 		// x and y to [0,180]
-		x += 0
-		y += 0
+		xMultiplier += 0
+		yMultiplier += 0
 		// Do stuff with the new orientation data
-		label.text = y
-		circle.x = y
+		label.text = xMultiplier
+		circle.x += xMultiplier
 	}
 	// HIT TEST
 	Ticker.add(() => {
