@@ -101,19 +101,25 @@ frame.on('ready', () => {
 		// Do stuff with the new orientation data
 		label.text = xMultiplier
 	}
-	// HIT TEST
+	// ZIM TICKER
 	Ticker.add(() => {
-		if (circle.x <= stageW && circle.x >= 0) {
-			circle.x += xMultiplier
-		} else {
+		// Move circle based on orientation data
+		circle.x += xMultiplier
+		yMultiplier = stageH
+
+		// Check if circle goes beyond stage width and height
+		if (circle.x > stageW) {
 			xMultiplier = stageW
+		} else if (circle.x < 0) {
+			xMultiplier = 0
 		}
-		if (circle.y <= stageH && circle.y >= 0) {
-			circle.y += yMultiplier
-		} else {
+		if (circle.y > stageH) {
 			yMultiplier = stageH
+		} else if (circle.y < 0) {
+			yMultiplier = 0
 		}
 
+		// Hit test
 		if (circle.hitTestReg(target)) {
 			delayCounter++
 			console.log('Hitting ' + delayCounter)
