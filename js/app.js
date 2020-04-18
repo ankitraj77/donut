@@ -28,8 +28,8 @@ frame.on('ready', () => {
 
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
-	const delay = 10
-	let delayCounter = 0
+	const delay = 100
+	let delayCounter = 100
 	let home = new Rectangle(stageW, stageH, '#2E3038')
 	let configure = new Rectangle(stageW, stageH, 'green')
 
@@ -64,7 +64,7 @@ frame.on('ready', () => {
 		borderWidth: 2,
 	}).centerReg()
 	let circle = new Circle(20, '#E65454').centerReg().pos(100, 100).drag()
-	let label = new Label('hello', null, null, '#ffffff')
+	let label = new Label({ text: '', color: '#ffffff', align: 'center' })
 		.centerReg()
 		.pos(null, 100)
 
@@ -99,7 +99,6 @@ frame.on('ready', () => {
 		xMultiplier += 0
 		yMultiplier += 0
 		// Do stuff with the new orientation data
-		label.text = xMultiplier
 	}
 	// ZIM TICKER
 	Ticker.add(() => {
@@ -121,12 +120,19 @@ frame.on('ready', () => {
 
 		// Hit test
 		if (circle.hitTestReg(target)) {
-			delayCounter++
-			console.log('Hitting ' + delayCounter)
+			if (delayCounter > 0) {
+				delayCounter--
+				label.text = delayCounter
+			} else {
+				label.text = 'You Win'
+			}
+
 			particles.pauseEmitter(false)
 		} else {
-			delayCounter = 0
+			delayCounter = delay
 			particles.pauseEmitter(true)
+			delayCounter = delay
+			label.text = ''
 		}
 	})
 
