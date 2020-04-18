@@ -93,8 +93,8 @@ frame.on('ready', () => {
 		x += 90
 		y += 90
 		// Do stuff with the new orientation data
-		label.text = x
-		circle.x = x
+		label.text = y
+		circle.x = y
 	}
 	// HIT TEST
 	Ticker.add(() => {
