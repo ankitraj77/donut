@@ -31,8 +31,9 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 60 // 1 minute
+	const defaultTime = 30 // 1 minute
 	const margin = 20
+	const winScore = 5
 	let time = defaultTime
 	let delayCounter = 100
 	let score = 0
@@ -133,7 +134,7 @@ frame.on('ready', () => {
 	let yMultiplier = 0
 
 	// TIMER
-	interval(1000, () => {
+	let timer = interval(1000, () => {
 		time--
 	})
 
@@ -163,9 +164,10 @@ frame.on('ready', () => {
 	}
 	// ZIM TICKER
 	Ticker.add(() => {
-		// Update time
+		// Update time, score
 		timerLabel.text = time
-		if (time <= defaultTime) {
+
+		if (time >= 0) {
 			// Move circle based on orientation data
 			circle.x += xMultiplier
 			circle.y += yMultiplier
@@ -190,6 +192,7 @@ frame.on('ready', () => {
 					label.text = delayCounter
 				} else {
 					label.text = 'You Win'
+					gameWin()
 				}
 
 				particles.pauseEmitter(false)
@@ -200,8 +203,51 @@ frame.on('ready', () => {
 				label.removeFrom()
 				label.text = ''
 			}
+		} else {
+			// TIME OVER
+			timer.pause(true)
+			label.addTo()
+			label.text = 'TIMEOUT'
+			timeout(3000, () => {
+				newGame('current')
+			})
 		}
 	})
+
+	// ======================== FUNCTONS
+	// GAME OVER
+	async function gameOver() {
+		// game over logic and procedure
+		console.log('GAME OVER')
+
+		score -= winScore
+		// label.addTo()
+		// label.text = 'GAME OVER'
+
+		timeout(3000, () => {
+			time = defaultTime
+			newGame('current')
+		})
+	}
+
+	// GAME WIN
+	function gameWin() {
+		// game win procedure
+		console.log('WON THE GAME')
+
+		time = defaultTime
+		score += winScore
+		scoreLabel.text = score
+		// newGame('next')
+	}
+
+	// NEW GAME NEXT STAGE
+	function newGame(status) {
+		// reset and next stage logic
+		console.log('NEW GAME')
+		timer.pause(false)
+		time = defaultTime
+	}
 
 	stage.update() // this is needed to show any changes
 }) // end of ready
