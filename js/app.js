@@ -32,6 +32,7 @@ frame.on('ready', () => {
 	// make pages (these would be containers with content)
 	const delay = 100
 	const defaultTime = 60 // 1 minute
+	const margin = 20
 	let time = defaultTime
 	let delayCounter = 100
 	let score = 0
@@ -84,10 +85,19 @@ frame.on('ready', () => {
 	new Label({
 		text: 'SCORE',
 		color: '#ffffff',
-		size: 18,
+		size: 16,
 	})
 		.centerReg(scoreBoard)
-		.pos(50, 45, RIGHT)
+		.pos(20, 45, RIGHT)
+	// SCORE
+	let scoreLabel = new Label({
+		text: score,
+		color: '#ffffff',
+		align: 'right',
+		size: 28,
+	})
+		.centerReg(scoreBoard)
+		.pos(90, 40, RIGHT, TOP)
 	// COUNTER LABEL
 	let label = new Label({
 		text: '',
@@ -99,21 +109,19 @@ frame.on('ready', () => {
 	})
 		.centerReg(scoreBoard)
 		.pos(null, 150)
-	// SCORE
-	let scoreLabel = new Label({ text: score, color: '#ffffff', align: 'right' })
-		.centerReg(scoreBoard)
-		.pos(130, 36, RIGHT, TOP)
+
 	// TIMER LABEL
 	let timerLabel = new Label({
 		text: time,
 		color: '#ffffff',
 		align: 'center',
+		size: 28,
 	})
 		.centerReg(scoreBoard)
-		.pos(null, 36)
+		.pos(null, 40)
 
 	// LOGO
-	new asset('donut-logo.png').centerReg().pos(50, 40)
+	new asset('donut-logo.png').centerReg().pos(margin, 40)
 
 	// PARTICLES
 	let particles = new Emitter({
