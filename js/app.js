@@ -10,8 +10,10 @@ const width = 1024
 const height = 768
 const color = light // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark // any HTML colors like "violet", "#333", etc. are fine to use
+const path = 'assets/'
+const assets = ['donut-logo.png']
 
-const frame = new Frame(scaling, width, height, color, outerColor)
+const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 frame.on('ready', () => {
 	// ES6 Arrow Function - like function(){}
 	zog('ready from ZIM Frame') // logs in console (F12 - choose console)
@@ -29,7 +31,10 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
+	const defaultTime = 60 // 1 minute
+	let time = defaultTime
 	let delayCounter = 100
+	let score = 0
 	let home = new Rectangle(stageW, stageH, '#2E3038')
 	let configure = new Rectangle(stageW, stageH, 'green')
 
@@ -63,10 +68,52 @@ frame.on('ready', () => {
 		borderColor: '#54E69D',
 		borderWidth: 2,
 	}).centerReg()
-	let circle = new Circle(20, '#E65454').centerReg().pos(100, 100).drag()
-	let label = new Label({ text: '', color: '#ffffff', align: 'center' })
+
+	// CIRCLE
+	let circle = new Circle(20, '#E66A54').centerReg().pos(100, 100).drag()
+
+	// SCORE BOARD
+	let scoreBoard = new Rectangle({
+		width: stageW,
+		height: 100,
+		color: 'rgba(255,255,255,0.03)',
+	})
 		.centerReg()
-		.pos(null, 100)
+		.pos(0, 0)
+	// SCORE LABEL
+	new Label({
+		text: 'SCORE',
+		color: '#ffffff',
+		size: 18,
+	})
+		.centerReg(scoreBoard)
+		.pos(50, 45, RIGHT)
+	// COUNTER LABEL
+	let label = new Label({
+		text: '',
+		color: '#ffffff',
+		align: 'center',
+		backgroundColor: '#E66A54',
+		corner: 14,
+		padding: 20,
+	})
+		.centerReg(scoreBoard)
+		.pos(null, 150)
+	// SCORE
+	let scoreLabel = new Label({ text: score, color: '#ffffff', align: 'right' })
+		.centerReg(scoreBoard)
+		.pos(130, 36, RIGHT, TOP)
+	// TIMER LABEL
+	let timerLabel = new Label({
+		text: time,
+		color: '#ffffff',
+		align: 'center',
+	})
+		.centerReg(scoreBoard)
+		.pos(null, 36)
+
+	// LOGO
+	new asset('donut-logo.png').centerReg().pos(50, 40)
 
 	// PARTICLES
 	let particles = new Emitter({
@@ -76,6 +123,12 @@ frame.on('ready', () => {
 
 	let xMultiplier = 0
 	let yMultiplier = 0
+
+	// TIMER
+	interval(1000, () => {
+		time--
+	})
+
 	// DEVICE ORIENTATION
 	window.addEventListener('deviceorientation', handleOrientation, true)
 	function handleOrientation(event) {
@@ -102,37 +155,43 @@ frame.on('ready', () => {
 	}
 	// ZIM TICKER
 	Ticker.add(() => {
-		// Move circle based on orientation data
-		circle.x += xMultiplier
-		circle.y += yMultiplier
+		// Update time
+		timerLabel.text = time
+		if (time <= defaultTime) {
+			// Move circle based on orientation data
+			circle.x += xMultiplier
+			circle.y += yMultiplier
 
-		// Check if circle goes beyond stage width and height
-		if (circle.x > stageW) {
-			circle.x = stageW
-		} else if (circle.x < 0) {
-			circle.x = 0
-		}
-		if (circle.y > stageH) {
-			circle.y = stageH
-		} else if (circle.y < 0) {
-			circle.y = 0
-		}
-
-		// Hit test
-		if (circle.hitTestReg(target)) {
-			if (delayCounter > 0) {
-				delayCounter--
-				label.text = delayCounter
-			} else {
-				label.text = 'You Win'
+			// Check if circle goes beyond stage width and height
+			if (circle.x > stageW) {
+				circle.x = stageW
+			} else if (circle.x < 0) {
+				circle.x = 0
+			}
+			if (circle.y > stageH) {
+				circle.y = stageH
+			} else if (circle.y < 0) {
+				circle.y = 0
 			}
 
-			particles.pauseEmitter(false)
-		} else {
-			delayCounter = delay
-			particles.pauseEmitter(true)
-			delayCounter = delay
-			label.text = ''
+			// Hit test
+			if (circle.hitTestReg(target)) {
+				if (delayCounter > 0) {
+					delayCounter--
+					label.addTo()
+					label.text = delayCounter
+				} else {
+					label.text = 'You Win'
+				}
+
+				particles.pauseEmitter(false)
+			} else {
+				delayCounter = delay
+				particles.pauseEmitter(true)
+				delayCounter = delay
+				label.removeFrom()
+				label.text = ''
+			}
 		}
 	})
 
