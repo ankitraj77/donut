@@ -31,9 +31,11 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 30 // 1 minute
+	const defaultTime = 20 // 1 minute
 	const margin = 20
 	const winScore = 5
+	let level = 0
+	let isGameOver = false
 	let time = defaultTime
 	let delayCounter = 100
 	let score = 0
@@ -197,20 +199,21 @@ frame.on('ready', () => {
 
 				particles.pauseEmitter(false)
 			} else {
-				delayCounter = delay
 				particles.pauseEmitter(true)
 				delayCounter = delay
-				label.removeFrom()
-				label.text = ''
+				if (!isGameOver) {
+					label.removeFrom()
+					label.text = ''
+				}
 			}
 		} else {
 			// TIME OVER
+			isGameOver = true
 			timer.pause(true)
 			label.addTo()
 			label.text = 'TIMEOUT'
-			timeout(3000, () => {
-				newGame('current')
-			})
+			if (isGameOver) newGameLabel('current')
+			newGame()
 		}
 	})
 
@@ -226,7 +229,7 @@ frame.on('ready', () => {
 
 		timeout(3000, () => {
 			time = defaultTime
-			newGame('current')
+			newGameLabel('current')
 		})
 	}
 
@@ -238,15 +241,27 @@ frame.on('ready', () => {
 		time = defaultTime
 		score += winScore
 		scoreLabel.text = score
-		// newGame('next')
+		// newGameLabel('next')
 	}
 
-	// NEW GAME NEXT STAGE
-	function newGame(status) {
+	// NEW GAME LABEL
+	function newGameLabel(status) {
 		// reset and next stage logic
 		console.log('NEW GAME')
-		timer.pause(false)
-		time = defaultTime
+		timeout(3000, () => {
+			isGameOver = false
+			timer.pause(false) // start the timer
+			time = defaultTime // reset the timer to default
+		})
+	}
+
+	//NEW GAME NEXT STAGE
+	function newGame() {
+		// new game logic
+		target.removeFrom()
+		let x = rand(target.width, stageW - target.width)
+		let y = rand(100, stageH - target.height)
+		target.addTo().pos(x, y)
 	}
 
 	stage.update() // this is needed to show any changes
