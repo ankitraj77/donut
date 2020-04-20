@@ -31,9 +31,9 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 20 // 1 minute
+	const defaultTime = 5 // 1 minute
 	const margin = 20
-	const winScore = 5
+	const winScore = 555
 	let level = 0
 	let isGameOver = false
 	let time = defaultTime
@@ -73,6 +73,14 @@ frame.on('ready', () => {
 		borderWidth: 2,
 	}).centerReg()
 
+	let targetAnimation = target.animate({
+		props: {
+			x: target.x + 10,
+		},
+		time: 800,
+		loop: true,
+		rewind: true,
+	})
 	// CIRCLE
 	let circle = new Circle(20, '#E66A54').centerReg().pos(100, 100).drag()
 
@@ -88,19 +96,36 @@ frame.on('ready', () => {
 	new Label({
 		text: 'SCORE',
 		color: '#ffffff',
-		size: 16,
+		size: 14,
 	})
 		.centerReg(scoreBoard)
-		.pos(20, 45, RIGHT)
+		.pos(20, 30, RIGHT)
+	// LEVEL LABEL
+	new Label({
+		text: 'LEVEL',
+		color: '#ffffff',
+		size: 14,
+	})
+		.centerReg(scoreBoard)
+		.pos(20, 60, RIGHT)
 	// SCORE
 	let scoreLabel = new Label({
 		text: score,
 		color: '#ffffff',
 		align: 'right',
-		size: 28,
+		size: 26,
 	})
 		.centerReg(scoreBoard)
-		.pos(90, 40, RIGHT, TOP)
+		.pos(80, 25, RIGHT, TOP)
+	// LEVEL
+	let levelLabel = new Label({
+		text: level,
+		color: '#ffffff',
+		align: 'right',
+		size: 26,
+	})
+		.centerReg(scoreBoard)
+		.pos(80, 55, RIGHT, TOP)
 	// COUNTER LABEL
 	let label = new Label({
 		text: '',
@@ -168,6 +193,8 @@ frame.on('ready', () => {
 	Ticker.add(() => {
 		// Update time, score
 		timerLabel.text = time
+		levelLabel.text = level
+		scoreLabel.text = score
 
 		if (time >= 0) {
 			// Move circle based on orientation data
@@ -194,7 +221,20 @@ frame.on('ready', () => {
 					label.text = delayCounter
 				} else {
 					label.text = 'You Win'
+					time = defaultTime
+					level++
+					score += winScore
+
 					newGame()
+					// target.animate = null
+					// targetAnimation = target.animate({
+					// 	props: {
+					// 		x: target.x + 50,
+					// 	},
+					// 	time: 600,
+					// 	loop: true,
+					// 	rewind: true,
+					// })
 				}
 
 				particles.pauseEmitter(false)
@@ -212,6 +252,7 @@ frame.on('ready', () => {
 			timer.pause(true)
 			label.addTo()
 			label.text = 'TIMEOUT'
+			if (score > 0) score--
 			if (isGameOver) newGameLabel('current')
 			newGame()
 		}
@@ -264,5 +305,10 @@ frame.on('ready', () => {
 		target.addTo().pos(x, y)
 	}
 
+	// Wiggle target -
+	function wiggleTarget() {
+		// increase the intensity as per the level
+	}
+	//
 	stage.update() // this is needed to show any changes
 }) // end of ready
