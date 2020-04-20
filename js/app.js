@@ -31,7 +31,7 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 20 // 1 minute
+	const defaultTime = 2 // 1 minute
 	const margin = 20
 	const winScore = 555
 	let level = 0
@@ -73,7 +73,8 @@ frame.on('ready', () => {
 		borderWidth: 2,
 	}).centerReg()
 
-	target.wiggle('x', target.x, 4, 10)
+	// target.wiggle('x', target.x, 4, 10)
+
 	// let targetAnimation = target.animate({
 	// 	props: {
 	// 		x: target.x + 10,
@@ -227,6 +228,7 @@ frame.on('ready', () => {
 					score += winScore
 
 					newGame()
+					// target.wiggle('x', target.x, 4, 10)
 					// target.animate = null
 					// targetAnimation = target.animate({
 					// 	props: {
