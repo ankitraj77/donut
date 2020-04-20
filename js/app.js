@@ -31,7 +31,7 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 2 // 1 minute
+	const defaultTime = 20 // 1 minute
 	const margin = 20
 	const winScore = 555
 	let level = 0
