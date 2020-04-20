@@ -194,7 +194,7 @@ frame.on('ready', () => {
 					label.text = delayCounter
 				} else {
 					label.text = 'You Win'
-					gameWin()
+					newGame()
 				}
 
 				particles.pauseEmitter(false)
