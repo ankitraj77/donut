@@ -73,14 +73,15 @@ frame.on('ready', () => {
 		borderWidth: 2,
 	}).centerReg()
 
-	let targetAnimation = target.animate({
-		props: {
-			x: target.x + 10,
-		},
-		time: 800,
-		loop: true,
-		rewind: true,
-	})
+	target.wiggle('x', target.x, 4, 10)
+	// let targetAnimation = target.animate({
+	// 	props: {
+	// 		x: target.x + 10,
+	// 	},
+	// 	time: 800,
+	// 	loop: true,
+	// 	rewind: true,
+	// })
 	// CIRCLE
 	let circle = new Circle(20, '#E66A54').centerReg().pos(100, 100).drag()
 
@@ -300,7 +301,7 @@ frame.on('ready', () => {
 	function newGame() {
 		// new game logic
 		target.removeFrom()
-		let x = rand(target.width, stageW - target.width)
+		let x = rand(50, stageW - target.width)
 		let y = rand(100, stageH - target.height)
 		target.addTo().pos(x, y)
 	}
