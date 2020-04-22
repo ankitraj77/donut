@@ -11,7 +11,7 @@ const height = 768
 const color = light // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark // any HTML colors like "violet", "#333", etc. are fine to use
 const path = 'assets/'
-const assets = ['donut-logo.png']
+const assets = ['donut-logo.png', 'donut-1.png', 'donut-2.png', 'plate.png']
 
 const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
 frame.on('ready', () => {
@@ -72,7 +72,7 @@ frame.on('ready', () => {
 		borderColor: '#54E69D',
 		borderWidth: 2,
 	}).centerReg()
-
+	new asset('plate.png').centerReg(target).sca(0.65)
 	// target.wiggle('x', target.x, 4, 10)
 
 	// let targetAnimation = target.animate({
@@ -84,7 +84,8 @@ frame.on('ready', () => {
 	// 	rewind: true,
 	// })
 	// CIRCLE
-	let circle = new Circle(20, '#E66A54').centerReg().pos(100, 100).drag()
+	let circle = new Circle(20, 'rgba(0,0,0,0)').centerReg().pos(100, 100).drag()
+	new asset('donut-1.png').centerReg(circle).sca(0.34)
 
 	// SCORE BOARD
 	let scoreBoard = new Rectangle({
