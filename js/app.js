@@ -84,7 +84,11 @@ frame.on('ready', () => {
 	// 	rewind: true,
 	// })
 	// CIRCLE
-	let circle = new Circle(20, 'rgba(0,0,0,0)').centerReg().pos(100, 100).drag()
+	let circle = new Circle(20, 'rgba(0,0,0,0)')
+		.centerReg()
+		.pos(100, 100)
+		.top()
+		.drag()
 	new asset('donut-1.png').centerReg(circle).sca(0.34)
 
 	// SCORE BOARD
@@ -306,7 +310,7 @@ frame.on('ready', () => {
 		target.removeFrom()
 		let x = rand(50, stageW - target.width)
 		let y = rand(100, stageH - target.height)
-		target.addTo().pos(x, y)
+		target.addTo().pos(x, y).ord(-1)
 	}
 
 	// Wiggle target -
