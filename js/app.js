@@ -311,6 +311,7 @@ frame.on('ready', () => {
 		let x = rand(50, stageW - target.width)
 		let y = rand(100, stageH - target.height)
 		target.addTo().pos(x, y).ord(-1)
+		circle.top()
 	}
 
 	// Wiggle target -
