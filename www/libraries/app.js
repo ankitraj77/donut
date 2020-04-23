@@ -229,8 +229,8 @@ frame.on('ready', () => {
 			}
 			if (circle.y > stageH) {
 				circle.y = stageH
-			} else if (circle.y < 0) {
-				circle.y = 0
+			} else if (circle.y < scoreBoard.height) {
+				circle.y = scoreBoard.height
 			}
 
 			// Hit test
@@ -245,7 +245,7 @@ frame.on('ready', () => {
 					level++
 					score += winScore
 
-					navigator.vibrate(500)
+					navigator.vibrate(1000)
 
 					newGame()
 					// target.wiggle('x', target.x, 4, 10)
