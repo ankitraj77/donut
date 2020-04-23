@@ -6,14 +6,14 @@
 // "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
 
 const scaling = 'full' // this will resize to fit inside the screen dimensions
-const width = 1024
-const height = 768
+// const width = 1024
+// const height = 768
 const color = light // ZIM colors like green, blue, pink, faint, clear, etc.
 const outerColor = dark // any HTML colors like "violet", "#333", etc. are fine to use
 const path = 'assets/'
 const assets = ['donut-logo.png', 'donut-1.png', 'donut-2.png', 'plate.png']
 
-const frame = new Frame(scaling, width, height, color, outerColor, assets, path)
+const frame = new Frame(scaling, null, null, color, outerColor, assets, path)
 frame.on('ready', () => {
 	// ES6 Arrow Function - like function(){}
 	zog('ready from ZIM Frame') // logs in console (F12 - choose console)
@@ -31,7 +31,7 @@ frame.on('ready', () => {
 	// with chaining - can also assign to a variable for later access
 	// make pages (these would be containers with content)
 	const delay = 100
-	const defaultTime = 20 // 1 minute
+	const defaultTime = 20 // 20 seconds
 	const margin = 20
 	const winScore = 555
 	let level = 0
@@ -40,14 +40,14 @@ frame.on('ready', () => {
 	let delayCounter = 100
 	let score = 0
 	let home = new Rectangle(stageW, stageH, '#2E3038')
-	let configure = new Rectangle(stageW, stageH, 'green')
+	let scorepage = new Rectangle(stageW, stageH, '#412B2B')
 
 	let pages = new Pages({
 		pages: [
 			// imagine pages to the left, right, up and down
 			// swipe:["to page on left", "to page on right", etc.s]
-			{ page: home, swipe: [null, configure, null, null] },
-			{ page: configure, swipe: [home, null, null, null] },
+			{ page: home, swipe: [null, scorepage, null, null] },
+			{ page: scorepage, swipe: [home, null, null, null] },
 		],
 		transition: 'slide',
 		speed: 300, // slower than usual for demonstration
@@ -61,17 +61,14 @@ frame.on('ready', () => {
 	// the event gives you the page object
 	// so add a name properties just make it easier to manage
 	home.name = 'home'
-	configure.name = 'configure'
-	pages.on('page', function () {
-		zog(pages.page.name) // now we know which page we are on
-	})
+	scorepage.name = 'scorepage'
 
 	// TARGET CIRCLE
 	let target = new Circle({
 		radius: 41,
 		borderColor: '#54E69D',
 		borderWidth: 2,
-	}).centerReg()
+	}).centerReg(home)
 	new asset('plate.png').centerReg(target).sca(0.65)
 	// target.wiggle('x', target.x, 4, 10)
 
@@ -84,11 +81,10 @@ frame.on('ready', () => {
 	// 	rewind: true,
 	// })
 	// CIRCLE
-	let circle = new Circle(20, 'rgba(0,0,0,0)')
-		.centerReg()
+	let circle = new Circle(20, 'rgba(0,0,0,0.01)')
+		.centerReg(home)
 		.pos(100, 100)
 		.top()
-		.drag()
 	new asset('donut-1.png').centerReg(circle).sca(0.34)
 
 	// SCORE BOARD
@@ -155,6 +151,23 @@ frame.on('ready', () => {
 		.centerReg(scoreBoard)
 		.pos(null, 40)
 
+	// HIGH SCORE LABEL
+	let highscoreLabel = new Label({
+		text: localStorage.getItem('score') ? localStorage.getItem('score') : score,
+		color: '#ffffff',
+		align: 'center',
+		size: 28,
+	})
+		.centerReg(scorepage)
+		.pos(null, 300)
+	new Label({
+		text: 'HIGH SCORE',
+		color: '#ffffff',
+		align: 'center',
+		size: 28,
+	})
+		.centerReg(scorepage)
+		.pos(null, 250)
 	// LOGO
 	new asset('donut-logo.png').centerReg().pos(margin, 40)
 
@@ -231,6 +244,7 @@ frame.on('ready', () => {
 					time = defaultTime
 					level++
 					score += winScore
+					window.navigator.vibrate(200)
 
 					newGame()
 					// target.wiggle('x', target.x, 4, 10)
@@ -266,6 +280,13 @@ frame.on('ready', () => {
 		}
 	})
 
+	// PAGE EVENT
+	pages.on('page', function () {
+		if (pages.page.name === 'scorepage') timer.pause(true) // stop the timer
+		if (pages.page.name === 'home') timer.pause(false) // start the timer
+
+		zog(pages.page.name) // now we know which page we are on
+	})
 	// ======================== FUNCTONS
 	// GAME OVER
 	async function gameOver() {
@@ -306,18 +327,25 @@ frame.on('ready', () => {
 
 	//NEW GAME NEXT STAGE
 	function newGame() {
+		// Store highest score in localStorage
+		if (!localStorage.getItem('score')) {
+			localStorage.setItem('score', score)
+		} else {
+			let oldScore = JSON.parse(localStorage.getItem('score'))
+			if (score > oldScore) {
+				localStorage.clear()
+				localStorage.setItem('score', score)
+			}
+		}
+
 		// new game logic
 		target.removeFrom()
 		let x = rand(50, stageW - target.width)
 		let y = rand(100, stageH - target.height)
-		target.addTo().pos(x, y).ord(-1)
+		target.addTo(home).pos(x, y).ord(-1)
 		circle.top()
 	}
 
-	// Wiggle target -
-	function wiggleTarget() {
-		// increase the intensity as per the level
-	}
 	//
 	stage.update() // this is needed to show any changes
 }) // end of ready
