@@ -245,7 +245,7 @@ frame.on('ready', () => {
 					level++
 					score += winScore
 
-					navigator.vibrate(1000)
+					navigator.vibrate(500)
 
 					newGame()
 					// target.wiggle('x', target.x, 4, 10)
