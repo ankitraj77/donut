@@ -244,7 +244,7 @@ frame.on('ready', () => {
 					time = defaultTime
 					level++
 					score += winScore
-					window.navigator.vibrate(200)
+					navigator.vibrate(200)
 
 					newGame()
 					// target.wiggle('x', target.x, 4, 10)
