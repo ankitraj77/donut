@@ -1,2 +1,3 @@
 # donut
-connect the donuts
+
+Collect as many donuts as you can in 20 seconds!
