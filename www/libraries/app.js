@@ -229,8 +229,8 @@ frame.on('ready', () => {
 			}
 			if (circle.y > stageH) {
 				circle.y = stageH
-			} else if (circle.y < scoreBoard.height) {
-				circle.y = scoreBoard.height
+			} else if (circle.y < scoreBoard.height + circle.height / 2) {
+				circle.y = scoreBoard.height + circle.height / 2
 			}
 
 			// Hit test
