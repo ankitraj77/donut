@@ -244,7 +244,8 @@ frame.on('ready', () => {
 					time = defaultTime
 					level++
 					score += winScore
-					navigator.vibrate(200)
+
+					navigator.vibrate(1000)
 
 					newGame()
 					// target.wiggle('x', target.x, 4, 10)
@@ -335,6 +336,7 @@ frame.on('ready', () => {
 			if (score > oldScore) {
 				localStorage.clear()
 				localStorage.setItem('score', score)
+				highscoreLabel.text = score
 			}
 		}
 
